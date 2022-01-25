@@ -1,0 +1,87 @@
+html, body {
+    margin: 0;
+}
+
+* {
+    font-family: 'Lato Medium', sans-serif;
+}
+
+table {
+    page-break-inside: avoid;
+    page-break-after: always;
+    border-collapse: collapse;
+    width: 100vw;
+    height: 100vh;
+}
+
+th {
+    font-family: 'Lato Hairline', sans-serif;
+    padding: 0;
+    padding-bottom: 1rem;
+    height: 2.5rem;
+}
+
+th.month {
+    text-align: center !important;
+    font-size: 2.5rem;
+}
+
+td {
+    padding: 0 1rem;
+    border: 0.1rem solid #EEE;
+}
+
+.no_work td{
+    background-color: #EEE !important;
+    border-color: white;
+}
+
+span {
+    padding-right: 1rem;
+}
+
+span.birthday {
+    color: #999;
+    font-family: "Lato Thin", sans-serif;
+    font-size: 1rem;
+}
+
+span.holiday, .no_work {
+    color: green;
+}
+
+/* column-based styles */
+/* first two columns (with day nr and name) */
+table td:nth-child(-n+2) {
+    text-align: center;
+    background-color: #EEE !important;
+    border-color: white;
+    padding: 0 0.5rem;
+}
+
+/** columns 3 and 4 - with holidays and empty space */
+table td:nth-child(n+3) {
+    width: 47vw;
+}
+
+/*
+@media print 
+{
+    @page {
+      size: A4;
+      margin: 1cm;
+    }
+} */
+
+/*@media print {
+  table {
+    font-size: 1em;
+  }
+}*/
+
+/* row-based styles */
+/*
+table tr:nth-child(odd) td{
+}
+table tr:nth-child(even) td{
+}*/

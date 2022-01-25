@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "alma_calendar"
+version = "1.0"
+description = "Generate a monthly calendar including holidays and birthdays as printable HTML"
+authors = ["Markus Straub"]
+
+[tool.poetry.dependencies]
+python = "3.9.*"
+holidays = "^0.12"
+
+[tool.poetry.dev-dependencies]
+black = "*"
+flake8 = "^4.0"
+pytest = "^6.0"
+ipykernel = "^6.6.0"
+
+[tool.pytest.ini_options]
+addopts = ["-ra", "-W error"]
+
+[tool.black]
+#line-length = 100
+target-version = ['py39']
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
