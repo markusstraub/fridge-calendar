@@ -1,11 +1,9 @@
-#%%
 import datetime
 import calendar
 import holidays
 import locale
 from collections import namedtuple
 
-locale.setlocale(locale.LC_ALL, "de_AT.UTF-8")
 
 HTML_START = """
 <!DOCTYPE html>
@@ -30,12 +28,6 @@ TABLE_START = """
         <th colspan="2"></th>
         <th colspan="2" class="month">##MONTH##</th>
     </tr>
-    <!--<tr>
-        <th></th>
-        <th></th>
-        <th>Alexandra</th>
-        <th>Markus</th>
-    </tr>-->
 </thead>
 <tbody>
 """
@@ -61,7 +53,7 @@ class Month:
         )
 
     def create_calendar_days(self):
-        """returns a dict of month_day_string 2 day"""
+        """returns a dict of month_day_str: CalendarDay"""
         date = datetime.date(self.year, self.month, 1)
         days_in_month = calendar.monthrange(self.year, self.month)[1]
         end_date = date.replace(day=days_in_month)
@@ -168,34 +160,34 @@ def to_table_row(cal_day):
     return html
 
 
-html_file = "alma_calendar.html"
-months = ["2022-01", "2022-12"]
-birthdays = "birthdays.csv"
-include_holidays = True
-include_birthdays = True
-enforce_31_rows = True
+if __name__ == "__main__":
+    locale.setlocale(locale.LC_ALL, "de_AT.UTF-8")
+    html_file = "alma_calendar.html"
+    months = ["2022-01", "2022-02"]
+    birthdays = "birthdays.csv"
+    include_holidays = True
+    include_birthdays = True
+    enforce_31_rows = True
 
-with open(html_file, mode="w") as file:
-    file.write(HTML_START)
-    for month in Months(*months):
-        cal_days = month.create_calendar_days()
-        if include_birthdays:
-            for birthday in Birthday.stream(birthdays):
-                if month_day_str(birthday.date) in cal_days.keys():
-                    cal_days[month_day_str(birthday.date)].add_birthday(birthday)
-        if include_holidays:
-            for date, name in sorted(holidays.AT(years=month.year).items()):
-                if month_day_str(date) in cal_days.keys():
-                    cal_days[month_day_str(date)].add_holiday(name)
+    with open(html_file, mode="w") as file:
+        file.write(HTML_START)
+        for month in Months(*months):
+            cal_days = month.create_calendar_days()
+            if include_birthdays:
+                for birthday in Birthday.stream(birthdays):
+                    if month_day_str(birthday.date) in cal_days.keys():
+                        cal_days[month_day_str(birthday.date)].add_birthday(birthday)
+            if include_holidays:
+                for date, name in sorted(holidays.AT(years=month.year).items()):
+                    if month_day_str(date) in cal_days.keys():
+                        cal_days[month_day_str(date)].add_holiday(name)
 
-        file.write(TABLE_START.replace("##MONTH##", month.month_string()))
-        for cal_day in cal_days.values():
-            file.write(to_table_row(cal_day))
-        if enforce_31_rows and len(cal_days) < 31:
-            for i in range(31 - len(cal_days)):
-                file.write("<tr><td>-</td><td>-</td><td></td><td></td></tr>\n")
+            file.write(TABLE_START.replace("##MONTH##", month.month_string()))
+            for cal_day in cal_days.values():
+                file.write(to_table_row(cal_day))
+            if enforce_31_rows and len(cal_days) < 31:
+                for i in range(31 - len(cal_days)):
+                    file.write("<tr><td>-</td><td>-</td><td></td><td></td></tr>\n")
 
-        file.write(TABLE_END)
-    file.write(HTML_END)
-
-# %%
+            file.write(TABLE_END)
+        file.write(HTML_END)
