@@ -12,7 +12,15 @@ table {
     border-collapse: collapse;
     width: 100vw;
     height: 100vh;
+    margin-top: 3rem;
 }
+
+@media print 
+{
+    table {
+        margin-top: 0;
+    }
+} 
 
 th {
     font-family: 'Lato Hairline', sans-serif;
@@ -42,8 +50,6 @@ span {
 
 span.birthday {
     color: #999;
-    font-family: "Lato Thin", sans-serif;
-    font-size: 1rem;
 }
 
 span.holiday, .no_work {
@@ -63,25 +69,3 @@ table td:nth-child(-n+2) {
 table td:nth-child(n+3) {
     width: 47vw;
 }
-
-/*
-@media print 
-{
-    @page {
-      size: A4;
-      margin: 1cm;
-    }
-} */
-
-/*@media print {
-  table {
-    font-size: 1em;
-  }
-}*/
-
-/* row-based styles */
-/*
-table tr:nth-child(odd) td{
-}
-table tr:nth-child(even) td{
-}*/

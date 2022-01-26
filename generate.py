@@ -148,7 +148,10 @@ def to_table_row(cal_day):
     for holiday in cal_day.holidays:
         extras += f'<span class="holiday">{holiday}</span>'
     for birthday in cal_day.birthdays:
-        extras += f'<span class="birthday">{birthday.name} {birthday.date.year} ({birthday.calc_age(cal_day.date.year)})</span>'
+        if birthday.date.year == 9999:
+            extras += f'<span class="birthday">{birthday.name}</span>'
+        else:
+            extras += f'<span class="birthday">{birthday.name} {birthday.date.year} ({birthday.calc_age(cal_day.date.year)})</span>'
     html = "<tr>"
     if cal_day.is_holiday() or cal_day.is_weekend():
         html = '<tr class="no_work">'
@@ -163,7 +166,7 @@ def to_table_row(cal_day):
 if __name__ == "__main__":
     locale.setlocale(locale.LC_ALL, "de_AT.UTF-8")
     html_file = "alma_calendar.html"
-    months = ["2022-01", "2022-02"]
+    months = ["2022-01", "2022-12"]
     birthdays = "birthdays.csv"
     include_holidays = True
     include_birthdays = True
