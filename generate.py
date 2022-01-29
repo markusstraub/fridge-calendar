@@ -47,10 +47,16 @@ class Month:
         self.year = int(year)
         self.month = int(month)
 
+    def __eq__(self, other):
+        return self.year == other.year and self.month == other.month
+
     def __lt__(self, other):
         return self.year < other.year or (
             self.year == other.year and self.month < other.month
         )
+
+    def __le__(self, other):
+        return self == other or self < other
 
     def create_calendar_days(self):
         """returns a dict of month_day_str: CalendarDay"""
@@ -77,26 +83,18 @@ class Months:
         """start and end (both inclusive) given as yyyy-mm strings"""
         self.start = Month(*start.split("-"))
         self.end = Month(*end.split("-"))
-        self.current = None
 
     def __iter__(self):
-        return self
+        current = self.start
+        while current <= self.end:
+            yield current
 
-    def __next__(self):
-        if self.current is None:
-            self.current = self.start
-            return self.current
-
-        if not self.current < self.end:
-            raise StopIteration
-
-        new_year = self.current.year
-        new_month = self.current.month + 1
-        if new_month > 12:
-            new_year += 1
-            new_month = 1
-        self.current = Month(new_year, new_month)
-        return self.current
+            new_year = current.year
+            new_month = current.month + 1
+            if new_month > 12:
+                new_year += 1
+                new_month = 1
+            current = Month(new_year, new_month)
 
 
 class Birthday:
