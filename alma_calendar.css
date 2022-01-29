@@ -49,7 +49,8 @@ span {
 }
 
 span.birthday {
-    color: #999;
+    color: #BBB;
+    font-size: 0.8rem;
 }
 
 span.holiday, .no_work {

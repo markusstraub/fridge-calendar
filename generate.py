@@ -2,7 +2,6 @@ import datetime
 import calendar
 import holidays
 import locale
-from collections import namedtuple
 
 
 HTML_START = """
@@ -100,22 +99,33 @@ class Months:
 
 
 class Birthday:
-    def __init__(self, name, date):
-        self.name = name
+    def __init__(self, date, name, nick=None):
         self.date = date
+        if not isinstance(date, datetime.date):
+            self.date = datetime.date.fromisoformat(date)
+        self.name = name
+        self.nick = nick if nick is not None and len(nick) > 0 else None
 
     def __repr__(self):
-        return f"{self.name}: {self.date}"
+        return f"{self.name} ({self.nick}): {self.date}"
+
+    def get_print_name(self):
+        return self.name if self.nick is None else self.nick
 
     def calc_age(self, year):
         return year - self.date.year
 
-    def stream(file):
+    @classmethod
+    def stream(cls, file):
         with open(file) as stream:
             for line in stream:
-                name, birthday = line.strip().split(";")
-                birthday = datetime.date.fromisoformat(birthday)
-                yield Birthday(name, birthday)
+                if len(line) == 0:
+                    continue
+                values = [v.strip() for v in line.strip().split(";")]
+                if "?" in line or len(values) < 2:
+                    print(f"skipping invalid line {line}")
+                    continue
+                yield cls(*values)
 
 
 class CalendarDay:
@@ -149,9 +159,9 @@ def to_table_row(cal_day):
         extras += f'<span class="holiday">{holiday}</span>'
     for birthday in cal_day.birthdays:
         if birthday.date.year == 9999:
-            extras += f'<span class="birthday">{birthday.name}</span>'
+            extras += f'<span class="birthday">{birthday.get_print_name()}</span>'
         else:
-            extras += f'<span class="birthday">{birthday.name} {birthday.date.year} ({birthday.calc_age(cal_day.date.year)})</span>'
+            extras += f'<span class="birthday">{birthday.get_print_name()} {birthday.date.year} ({birthday.calc_age(cal_day.date.year)})</span>'
     html = "<tr>"
     if cal_day.is_holiday() or cal_day.is_weekend():
         html = '<tr class="no_work">'
@@ -165,19 +175,20 @@ def to_table_row(cal_day):
 
 if __name__ == "__main__":
     locale.setlocale(locale.LC_ALL, "de_AT.UTF-8")
-    html_file = "alma_calendar.html"
-    months = ["2022-01", "2022-12"]
-    birthdays = "birthdays.csv"
+    html_file = "alma_calendar_example.html"
+    months = ["2022-01", "2022-02"]
+    birthday_file = "birthdays_example.csv"
     include_holidays = True
     include_birthdays = True
     enforce_31_rows = True
 
     with open(html_file, mode="w") as file:
         file.write(HTML_START)
+        birthdays = list(Birthday.stream(birthday_file))
         for month in Months(*months):
             cal_days = month.create_calendar_days()
             if include_birthdays:
-                for birthday in Birthday.stream(birthdays):
+                for birthday in birthdays:
                     if month_day_str(birthday.date) in cal_days.keys():
                         cal_days[month_day_str(birthday.date)].add_birthday(birthday)
             if include_holidays:
