@@ -13,6 +13,7 @@ table {
     width: 100vw;
     height: 100vh;
     margin-top: 3rem;
+    table-layout: fixed;
 }
 
 @media print 
@@ -54,11 +55,16 @@ span.birthday {
 }
 
 span.holiday, .no_work {
-    color: green;
+    color: forestgreen;
 }
 
 /* column-based styles */
 /* first two columns (with day nr and name) */
+table th:nth-child(-n+2) {
+    /* fixed table layout: first two are defined, rest of space
+       is distributed equally to columns 3+4 */
+    width: 3rem;
+}
 table td:nth-child(-n+2) {
     text-align: center;
     background-color: #EEE !important;
@@ -68,5 +74,5 @@ table td:nth-child(-n+2) {
 
 /** columns 3 and 4 - with holidays and empty space */
 table td:nth-child(n+3) {
-    width: 47vw;
+    white-space: nowrap;
 }

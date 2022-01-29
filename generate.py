@@ -24,7 +24,8 @@ TABLE_START = """
 <table>
 <thead>
     <tr>
-        <th colspan="2"></th>
+        <th></th>
+        <th></th>
         <th colspan="2" class="month">##MONTH##</th>
     </tr>
 </thead>
