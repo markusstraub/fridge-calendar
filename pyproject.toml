@@ -1,17 +1,17 @@
 [tool.poetry]
-name = "alma_calendar"
-version = "1.0"
+name = "fridge-calendar"
+version = "0.1"
 description = "Generate a monthly calendar including holidays and birthdays as printable HTML"
 authors = ["Markus Straub"]
 
 [tool.poetry.dependencies]
-python = "3.9.*"
+python = ">=3.9"
 holidays = "^0.12"
 
 [tool.poetry.dev-dependencies]
 black = "*"
-flake8 = "^4.0"
-pytest = "^6.0"
+flake8 = ">=4"
+pytest = "^6"
 ipykernel = "^6.6.0"
 
 [tool.pytest.ini_options]

@@ -9,8 +9,8 @@ HTML_START = """
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Alma Kalenderl</title>
-    <link rel="stylesheet" href="./alma_calendar.css" />
+    <title>Fridge Calendar</title>
+    <link rel="stylesheet" href="./fridge_calendar.css" />
 </head>
 <body>
 """
@@ -174,9 +174,9 @@ def to_table_row(cal_day):
 
 if __name__ == "__main__":
     locale.setlocale(locale.LC_ALL, "de_AT.UTF-8")
-    html_file = "alma_calendar_example.html"
-    months = ["2022-01", "2022-02"]
-    birthday_file = "birthdays_example.csv"
+    html_file = "fridge_calendar.html"
+    months = ["2022-06", "2023-01"]
+    birthday_file = "birthdays.csv"
     include_holidays = True
     include_birthdays = True
     enforce_31_rows = True
